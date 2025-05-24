@@ -84,21 +84,56 @@ Berikut adalah cuplikan dari datset:
 | `rainfall`     | Curah hujan rata-rata tahunan                | mm      |
 | `label`        | Jenis tanaman yang paling cocok ditanam berdasarkan kondisi tersebut | Kategori |
 
-### Deteksi dan menangani Nilai Ekstream dengan Visualisasi Boxplot
+### *Explooratory Data Analysis* (EDA)
+#### Deteksi Nilai Ekstream (*Outlier*) dengan Visualisasi Boxplot
 ![Boxplot Fitur Numerik](boxplot.png)
-Dari visualisasi boxplot diperoleh bahwa fiitur `p`, `K`, `Temperature`, `humidity`, `pH`, dan `rainfall` memiliki nilai ekstream. Oleh karena itu, dilakukan penanganan missing value dengan metode IQR
+Visulisasi *boxplot* adalah salah satu metode analisis univariat yang digunakan untuk melihat sebaran data numerik. Dari visualisasi *boxplot* diperoleh bahwa fitur `p`, `K`, `Temperature`, `humidity`, `pH`, dan `rainfall` memiliki  (*outlier*). Oleh karena itu, dilakukan penanganan *outlier* dengan metode *interquartile range* (IQR).
 
-### 
+#### Penanganan Nilai Ekstream (*Outlier*) dengan metode 
+metode IQR adalah metode yang digunakan untuk mengatasi *outlier* dengan mebuang/menghapus nilai yang berada diluar batas atas dan batas bawah. Cara mengidetifikasi *outlier* adalah dengan mengurutkan nilai numerik dan membaginya menjadi empat bagian sama rata. Titik di akhir bagian pertama disebut $Q1$ (kuartil pertama), dan titik di akhir bagian ketiga disebut $Q3$ (kuartil ketiga). Jarak antara $Q1$ dan $Q3$ disebut IQR. secara matematis dapat dituliskan sebagai berikut:
+$$IQR=Q3−Q1$$
+$$Batas Bawah=Q1−1,5×IQR$$
+$$Batas Atas=Q3+1,5×IQR$$
+Semua data yang nilainya kurang dari Batas Bawah atau lebih dari Batas Atas dianggap outlier dan dihapus[[6](https://medium.com/@pp1222001/outlier-detection-and-removal-using-the-iqr-method-6fab2954315d)].
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Melakukan beberapa tahapan yang diperlukan untuk memahami data, contohnya teknik visualisasi data atau exploratory data analysis.
+Penanganan *outlier* diperlukan karena *outlier* dapat menyebabkan bias pada batas-batas klasifikasi terutama pada algoritma berbasis jarak. Selain itu, dengan mengapus *outlier* dapat mengurangi *noise* dan meningkatkan performa dari model klassifikasi. 
+
+Setelah dilakukan penanganan pada *outlier* data jumlah observasi data berkurang menjadi 1768 observasi dan diperoleh sebaran data dengan visualisasi histogram sebagai berikut:
+ ![Histogram Fitur Numerik (Clean)](Histogram.png)
+ Interpretasi:
+ 
+| Nama Fitur    | Mean  | Skewness | Keterangan                                                        |
+|---------------|-------|----------|------------------------------------------------------------------|
+| `N`           | 54.33 | 0.35     | Distribusi sedikit miring ke kanan, relatif mendekati simetris.  |
+| `P`           | 44.85 | 0.00     | Distribusi sangat simetris dengan data tersebar cukup merata.    |
+| `K`           | 31.72 | 1.00     | Distribusi miring ke kanan dengan ekor data lebih panjang.       |
+| `temperature` | 25.84 | -0.07    | Distribusi cukup normal dengan sedikit kemiringan ke kiri.       |
+| `humidity`    | 70.11 | -0.94    | Distribusi miring ke kiri dengan ekor data lebih panjang.        |
+| `ph`          | 6.48  | -0.07    | Distribusi mendekati normal dan hampir simetris.                 |
+| `rainfall`    | 98.00 | 0.54     | Distribusi sedikit miring ke kanan.                              |
+| `label encoded`| 9.18 | 0.08     | Data numerik hasil encoding dengan distribusi cukup simetris.    |
+
+#### Multivariate Analysis
+![Heatmap Korelasi](Heatmap.png)
+Visualisasi Heatmap digunakan untuk mengambarkan korelasi antara pasangan fitur numerik. Dari visualisasi diperoleh bahwa tidak ada fitur yang memiliki korelasi yang kuat (mendekati 1 atau -1). Fitur `humidity` memiliki hubungan negatif yang cukup kuat dengan `P` dan hubungan positif dengan `N` dan `temperature`. Fitur `N` dan `K` juga memiliki hubungan positif yang sedang. Sedangkan variabel yang lainnya secara umum memiliki korelasi hubungan yang rendah antara satu sama lain.
+
+### Fitur Target
+![Count Plot Target](Coutplot.png)
+Visualisasi *coutplot* menampilkan distribusi dari fitur kategorik target. Dari visualisasi *coutplot*, diperoleh bahwa fitur target memiliki 20 kelas dengan jumlah observasi yang bervariasi. Sebagian besar kelas memilki 100 observasi, tapi beberapa kelas seperti rice (32), papaya (54), dan chickpea (58) jauh lebih sedikit jika dibandingkan dengan kelas yang lain. Hal ini dapat diartikan bahwa jumlah observasi pada setiap kelasnya tidak seimbang sehingga dapat mempengaruhi performa model.
 
 ## Data Preparation
-Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
-
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan proses data preparation yang dilakukan
-- Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
+Berikut adalah tahapan dalam menyiapkan data secara berurutan:
+- **Spliting data** \
+Membagi dataset menjadi dua bagian sebagai data latih (*train*) dan data uji (*test*). Pembagian dataset bertujuan untuk melatih dan mengevaluasi kinerja dari model. Pada proyek ini, digunakan proporsi *train* sebesar $80%$ untuk melatih model dan *test* sebesar *20%* untuk mengevaluasi kinerja dari mopdel.
+- **Standarisasi data** \
+mengubah skals nilai fitur numerik dengan tujuan supaya fitur numerik memiliki $rata-rata(\mu)=0$ dan $simpangan baku(\sigma)=1$ [[7](https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9)]. Secara matematis dapat dituliskan, sebagai berikut:
+$$Z=\frac{X-\mu}{\sigma}$$ 
+Keterangan:
+- $Z$ : Nilai hasil standarisasi
+- $X$ : Nilai asli
+- $\mu$ : rata-rata dari seluruh nilai pada fitur tersebut
+- $\sigma$ : simpangan baku dari fitur tersebut
+Tujuan dari tahapan ini adalah supaya setiap fitur memiliki kontribusi yang setara saat melatih model ML sehingga dapat meningkatkan performa dari model ML.
 
 ## Modeling
 Tahapan ini membahas mengenai model machine learning yang digunakan untuk menyelesaikan permasalahan. Anda perlu menjelaskan tahapan dan parameter yang digunakan pada proses pemodelan.
@@ -131,4 +166,6 @@ _Catatan:_
 [[2](https://journal.uii.ac.id/Snati/article/view/3126/2859)] D. Heksaputra, Y. Azani, Z. Naimah, dan L. Iswari, "Penentuan Pengaruh Iklim Terhadap Pertumbuhan Tanaman dengan Naïve Bayes," *Seminar Nasional Aplikasi Teknologi Informasi (SNATI)*, Yogyakarta, vol. N-34, pp. N-34–N-39, Jun. 2013, ISSN: 1907-5022. \
 [[3](https://medium.com/@MrBam44/decision-trees-91f61a42c724)] S. Koli, “Decision Trees: A Complete Introduction With Examples,” Medium, Feb. 27, 2023. [Online]. https://medium.com/@MrBam44/decision-trees-91f61a42c724. \
 [[4](https://ishanjainoffical.medium.com/understanding-random-forest-algorithm-with-python-code-ae6fb0e34938)] Data Science & Beyond, “Understanding Random Forest Algorithm with Python Code,” Medium, Oct. 2, 2023. [Online]. https://ishanjainoffical.medium.com/understanding-random-forest-algorithm-with-python-code-ae6fb0e34938. \
-[[5](https://medium.com/swlh/k-nearest-neighbor-ca2593d7a3c4)] A. Christopher, “K-Nearest Neighbor,” The Startup, Medium, Feb. 2, 2021. [Online]. https://medium.com/swlh/k-nearest-neighbor-ca2593d7a3c4.
+[[5](https://medium.com/swlh/k-nearest-neighbor-ca2593d7a3c4)] A. Christopher, “K-Nearest Neighbor,” The Startup, Medium, Feb. 2, 2021. [Online]. https://medium.com/swlh/k-nearest-neighbor-ca2593d7a3c4. \
+[[6](https://medium.com/@pp1222001/outlier-detection-and-removal-using-the-iqr-method-6fab2954315d)] P. Patel, “Outlier Detection and Removal using the IQR Method,” Medium, Dec. 14, 2021. [Online]. Available: https://medium.com/@pp1222001/outlier-detection-and-removal-using-the-iqr-method-6fab2954315d. \
+[[7](https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9)] O. S. Nalçin, "StandardScaler vs MinMaxScaler vs RobustScaler — Which one to use for your next ML project?," Medium, May 4, 2023. [Online]. https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9.
