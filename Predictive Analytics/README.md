@@ -3,7 +3,7 @@
 ## Domain Proyek
 Proyek ini memiliki domain di bidang pertanian yang berfokus kepada prediksi kecocokan tanaman terhadap kondisi lahan dan lingkungan tertentu.
 
-![Foto Pertanian](https://i.ibb.co/GfKgtch8/dataset-cover.jpg)
+![Foto Pertanian](https://i.ibb.co/TDVzbmC7/dataset-cover.jpg)
 
 ### Latar Belakang
 Indonesian merupakan negara agraris yang memiliki ketergantungan tinggi pada sektor pertanian sebagai penopang ekonomi dan ketahanan pangan. Namun, produktivitas dari sektor ini seringkali terhambat karena ketidaksesuaian antara jenis tanaman pertanian yang ditanam dengan kondisi lingkungan setempat, seperti kandungan unsur hara dalam tanah, suhu, pH tanah, dan curah hujan. ketidak sesuaian ini dapat menyebabkan hasil panen yang rendah dan kerugian bagi petani.
