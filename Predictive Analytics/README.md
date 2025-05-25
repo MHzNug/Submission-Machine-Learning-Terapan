@@ -91,9 +91,13 @@ Visulisasi *boxplot* adalah salah satu metode analisis univariat yang digunakan 
 
 #### Penanganan Nilai Ekstream (*Outlier*) dengan metode 
 metode IQR adalah metode yang digunakan untuk mengatasi *outlier* dengan mebuang/menghapus nilai yang berada diluar batas atas dan batas bawah. Cara mengidetifikasi *outlier* adalah dengan mengurutkan nilai numerik dan membaginya menjadi empat bagian sama rata. Titik di akhir bagian pertama disebut $Q1$ (kuartil pertama), dan titik di akhir bagian ketiga disebut $Q3$ (kuartil ketiga). Jarak antara $Q1$ dan $Q3$ disebut IQR. secara matematis dapat dituliskan sebagai berikut:
+
 $$IQR=Q3−Q1$$
+
 $$Batas Bawah=Q1−1,5×IQR$$
+
 $$Batas Atas=Q3+1,5×IQR$$
+
 Semua data yang nilainya kurang dari Batas Bawah atau lebih dari Batas Atas dianggap outlier dan dihapus[[6](https://medium.com/@pp1222001/outlier-detection-and-removal-using-the-iqr-method-6fab2954315d)].
 
 Penanganan *outlier* diperlukan karena *outlier* dapat menyebabkan bias pada batas-batas klasifikasi terutama pada algoritma berbasis jarak. Selain itu, dengan mengapus *outlier* dapat mengurangi *noise* dan meningkatkan performa dari model klassifikasi. 
@@ -127,7 +131,9 @@ Berikut adalah tahapan dalam menyiapkan data secara berurutan:
 Membagi dataset menjadi dua bagian sebagai data latih (*train*) dan data uji (*test*). Pembagian dataset bertujuan untuk melatih dan mengevaluasi kinerja dari model. Pada proyek ini, digunakan proporsi *train* sebesar $80%$ untuk melatih model dan *test* sebesar *20%* untuk mengevaluasi kinerja dari mopdel.
 - **Standarisasi data** \
 mengubah skals nilai fitur numerik dengan tujuan supaya fitur numerik memiliki $rata-rata(\mu)=0$ dan $simpangan baku(\sigma)=1$ [[7](https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9)]. Secara matematis dapat dituliskan, sebagai berikut:
+
 $$Z=\frac{X-\mu}{\sigma}$$ 
+
 Keterangan: \
 $Z$ : Nilai hasil standarisasi
 $X$ : Nilai asli \
@@ -158,7 +164,9 @@ Kelebihan dari algoritma ini adalah memiliki akurasi tinggi, dapat mengurangi *o
 Untuk mengevaluasi performa dari model ML dalam melakukan prediksi jenis tanaman yang cocok ditanam berdasarkan kondisi lingkungan setempat digunakan metrik, sebagai berikut:
 - Akurasi (*accuracy*) \
 Akurasi adalah rasio jumlah prediksi yang benar terhadap seluruh jumlah data atau secara matematis[[8](https://medium.com/@prateekgaurav/mastering-classification-metrics-a-beginners-guide-part-1-accuracy-precision-and-recall-fbadc90654ab)]:
+
 $$Akurasi = \frac{TP + TN}{TP + TN + FP + FN}$$
+
 keterangan: \
 $TP (True Positive):$ Prediksi benar untuk kelas positif. \
 $TN (True Negative):$ Prediksi benar untuk kelas negatif. \
@@ -180,6 +188,7 @@ Berikut adalah hasil evaluasi dari masing-masing model:
 | Random Forest  | 1.000          | 0.994         | 1.000   | No          |
 | Decision Tree           | 1.000          | 0.997         | 0.996   | No          |
 | KNN  | 0.981          | 0.966         | 0.992   | No |
+
 Interpretasi:
 - Akurasi train dan test berada di atas 96% 
 - ROC-AUC di atas 0.99 menunjukkan kemampuan klasifikasi yang sangat baik secara probabilistik.
