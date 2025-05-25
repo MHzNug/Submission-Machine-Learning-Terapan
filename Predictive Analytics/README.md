@@ -3,7 +3,7 @@
 ## Domain Proyek
 Proyek ini memiliki domain di bidang pertanian yang berfokus kepada prediksi kecocokan tanaman terhadap kondisi lahan dan lingkungan tertentu.
 
-![Foto Pertanian](https://storage.googleapis.com/kaggle-datasets-images/7367814/11736333/0dd2a975741503de21815f4405bde8b3/dataset-cover.jpg)
+![Foto Pertanian](https://ibb.co/5XNqnB7S)
 
 ### Latar Belakang
 Indonesian merupakan negara agraris yang memiliki ketergantungan tinggi pada sektor pertanian sebagai penopang ekonomi dan ketahanan pangan. Namun, produktivitas dari sektor ini seringkali terhambat karena ketidaksesuaian antara jenis tanaman pertanian yang ditanam dengan kondisi lingkungan setempat, seperti kandungan unsur hara dalam tanah, suhu, pH tanah, dan curah hujan. ketidak sesuaian ini dapat menyebabkan hasil panen yang rendah dan kerugian bagi petani.
@@ -52,7 +52,7 @@ Untuk mencapai tujuan proyek ini, akan dilakukan pengembangan model ML dengan ti
     - Memilih model  dengan keseimbangan optimal (ROC-AUC tinggi) dan tidak memiliki potensi overfitting.
 
 ## Data Understanding
-Dataset yang digunakan berasal dari [Kaggle](https://www.kaggle.com/madhuraatmarambhagat) yang berisi informasi mengenai jenis tanaman yang cocok untuk dibudidayakan sesuai dengan kondisi lingkungan setempat. Dataset terdiri dari 22000 observasi tanpa nilai yang hilang dan data duplikat dengan 8 fitur yang mencakup 7 fitur input numerik dan 1 fitur target output berupa jenis tanaman yang sesuai. berikut adalah ringkasan informasi dari dataset:
+Dataset yang digunakan berasal dari [Kaggle](https://www.kaggle.com) yang berisi informasi mengenai jenis tanaman yang cocok untuk dibudidayakan sesuai dengan kondisi lingkungan setempat. Dataset terdiri dari 22000 observasi tanpa nilai yang hilang dan data duplikat dengan 8 fitur yang mencakup 7 fitur input numerik dan 1 fitur target output berupa jenis tanaman yang sesuai. berikut adalah ringkasan informasi dari dataset:
 | Jenis        | Keterangan                                                                                           |
 |--------------|------------------------------------------------------------------------------------------------------|
 | Title        | Crop Recommendation Dataset                                                                          |
