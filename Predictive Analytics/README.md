@@ -3,7 +3,7 @@
 ## Domain Proyek
 Proyek ini memiliki domain di bidang pertanian yang berfokus kepada prediksi kecocokan tanaman terhadap kondisi lahan dan lingkungan tertentu.
 
-![Foto Pertanian](https://i.ibb.co/TDVzbmC7/dataset-cover.jpg)
+![Foto Pertanian](https://storage.googleapis.com/kaggle-datasets-images/7367814/11736333/0dd2a975741503de21815f4405bde8b3/dataset-cover.jpg?t=2025-05-08-17-03-12)
 
 ### Latar Belakang
 Indonesian merupakan negara agraris yang memiliki ketergantungan tinggi pada sektor pertanian sebagai penopang ekonomi dan ketahanan pangan. Namun, produktivitas dari sektor ini seringkali terhambat karena ketidaksesuaian antara jenis tanaman pertanian yang ditanam dengan kondisi lingkungan setempat, seperti kandungan unsur hara dalam tanah, suhu, pH tanah, dan curah hujan. ketidak sesuaian ini dapat menyebabkan hasil panen yang rendah dan kerugian bagi petani.
@@ -39,17 +39,17 @@ Tujuan dari proyek ini adalah:
 - Menargetkan nilai matrik evaluasi model ROC-AUC minimal 0.80 pada data uji.
 
 ### Solution statements
-Untuk mencapai tujuan proyek ini, akan dilakukan pengembangan model ML dengan tiga pendekatan solusi yang dievaluasi dengan metrik ROC-AUC serta akurasi dari data pelatihan (train) dan pengujian (test) untuk mendeteksi potensi overfitting pada model:
+Untuk mencapai tujuan proyek ini, akan dilakukan pengembangan model ML dengan tiga pendekatan solusi yang dievaluasi dengan metrik ROC-AUC serta akurasi dari data pelatihan (train) dan pengujian (test) untuk mendeteksi potensi *overfitting* pada model:
 - Model yang digunakan:
-    - Decision Tree Classifier adalah model yang mirip dengan bagan alur dengan serangakian pertanyaan "ya/tidak" untuk membagi data menjadi beberapa kelompok hingga mencapai hasil keputusan di ujung setiap cabang[[3](https://medium.com/@MrBam44/decision-trees-91f61a42c724)].
-    - Random Forest Classifier adalah pengembangan dari algoritma decision tree, model ini membangun banyak decision tree  secara acak (dengan subset data dan fitur yang berbeda) kemudian mengabungkan hasil prediksi sebagai "suara mayoritas" sebagai hasil akhirnya[[4](https://ishanjainoffical.medium.com/understanding-random-forest-algorithm-with-python-code-ae6fb0e34938)].
-    - K-Nearest Neighbors (KNN) adalah metode yang mengklasifikasi data baru dengan melihat $k$ tetangga terdekat pada ruang fitur dan menetapkan kelas berdasarkan kelas yang paling banyak muncul diantara tetangga tersebut[[5](https://medium.com/swlh/k-nearest-neighbor-ca2593d7a3c4)]. 
+    - *Decision Tree Classifier* adalah model yang mirip dengan bagan alur dengan serangakian pertanyaan "ya/tidak" untuk membagi data menjadi beberapa kelompok hingga mencapai hasil keputusan di ujung setiap cabang[[3](https://medium.com/@MrBam44/decision-trees-91f61a42c724)].
+    - *Random Forest Classifier* adalah pengembangan dari algoritma decision tree, model ini membangun banyak decision tree  secara acak (dengan subset data dan fitur yang berbeda) kemudian mengabungkan hasil prediksi sebagai "suara mayoritas" sebagai hasil akhirnya[[4](https://ishanjainoffical.medium.com/understanding-random-forest-algorithm-with-python-code-ae6fb0e34938)].
+    - *K-Nearest Neighbors* (KNN) adalah metode yang mengklasifikasi data baru dengan melihat $k$ tetangga terdekat pada ruang fitur dan menetapkan kelas berdasarkan kelas yang paling banyak muncul diantara tetangga tersebut[[5](https://medium.com/swlh/k-nearest-neighbor-ca2593d7a3c4)]. 
 - Prosedur evaluasi:
     - Membagi dataset menjadi set pelatihan dan pengujian dengan proporsi 80% data pelatihan dan 20% data pengujian.
     - Melatih model ML dengan data pelatihan.
     - Pengukuran kinerja dengan menghitung akurasi pada data pelatihan dan pengujian dan menghitung ROC-AUC pada data pelatihan.
-    - Membandingkan selisih nilai akurasi antara data pelatihan dengan data pengujian jika selisih akurasi $>0,05$ model dianggap memiliki potensi overfitting.
-    - Memilih model  dengan keseimbangan optimal (ROC-AUC tinggi) dan tidak memiliki potensi overfitting.
+    - Membandingkan selisih nilai akurasi antara data pelatihan dengan data pengujian jika selisih akurasi $>0,05$ model dianggap memiliki potensi *overfitting*.
+    - Memilih model  dengan keseimbangan optimal (ROC-AUC tinggi) dan tidak memiliki potensi *overfitting*.
 
 ## Data Understanding
 Dataset yang digunakan berasal dari [Kaggle](https://www.kaggle.com) yang berisi informasi mengenai jenis tanaman yang cocok untuk dibudidayakan sesuai dengan kondisi lingkungan setempat. Dataset terdiri dari 22000 observasi tanpa nilai yang hilang dan data duplikat dengan 8 fitur yang mencakup 7 fitur input numerik dan 1 fitur target output berupa jenis tanaman yang sesuai. berikut adalah ringkasan informasi dari dataset:
@@ -128,38 +128,70 @@ Membagi dataset menjadi dua bagian sebagai data latih (*train*) dan data uji (*t
 - **Standarisasi data** \
 mengubah skals nilai fitur numerik dengan tujuan supaya fitur numerik memiliki $rata-rata(\mu)=0$ dan $simpangan baku(\sigma)=1$ [[7](https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9)]. Secara matematis dapat dituliskan, sebagai berikut:
 $$Z=\frac{X-\mu}{\sigma}$$ 
-Keterangan:
-- $Z$ : Nilai hasil standarisasi
-- $X$ : Nilai asli
-- $\mu$ : rata-rata dari seluruh nilai pada fitur tersebut
-- $\sigma$ : simpangan baku dari fitur tersebut
+Keterangan: \
+$Z$ : Nilai hasil standarisasi
+$X$ : Nilai asli \
+$\mu$ : rata-rata dari seluruh nilai pada fitur tersebut \
+$\sigma$ : simpangan baku dari fitur tersebut 
+
 Tujuan dari tahapan ini adalah supaya setiap fitur memiliki kontribusi yang setara saat melatih model ML sehingga dapat meningkatkan performa dari model ML.
 
 ## Modeling
-Tahapan ini membahas mengenai model machine learning yang digunakan untuk menyelesaikan permasalahan. Anda perlu menjelaskan tahapan dan parameter yang digunakan pada proses pemodelan.
-
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan kelebihan dan kekurangan dari setiap algoritma yang digunakan.
-- Jika menggunakan satu algoritma pada solution statement, lakukan proses improvement terhadap model dengan hyperparameter tuning. **Jelaskan proses improvement yang dilakukan**.
-- Jika menggunakan dua atau lebih algoritma pada solution statement, maka pilih model terbaik sebagai solusi. **Jelaskan mengapa memilih model tersebut sebagai model terbaik**.
+Untuk menyelesaikan permasalahan dikembangkan model klasifikasi tanaman yang cocok ditanam berdasarkan kondisi longkungan (N, P, K, suhu, kelembaban, pH tanah, dan curah hujan), digunakan pendekatan tiga algoritma machine learning:
+- *Nearest Neighbors* (KNN)  
+    ```python
+    from sklearn.neighbors import KNeighborsClassifier
+    knn = KNeighborsClassifier()
+Kelebihan algoritma ini adalah sederhana dan mudah diimprlementasikan. namun algoritma ini sensitif terhadap skala fitur karena berbasis jarak dan lambat saat digunakan pada data besar.
+- *Decision Tree*
+    ```python
+    from sklearn.tree import DecisionTreeClassifier
+    dt = DecisionTreeClassifier(random_state=42)
+Kelebihan dari algoritma ini adalah interpretatif, mudah divisualisasikan, dan dapat menangani fitur numerik dan kategorik. Namun, cenderung mudah *overfitting* dan tidak stabil pada perubahan data.
+- *Random Forest* 
+    ```python
+    from sklearn.ensemble import RandomForestClassifier
+    rf = RandomForestClassifier(n_estimators=100, random_state=42)
+Kelebihan dari algoritma ini adalah memiliki akurasi tinggi, dapat mengurangi *overfitting* dari algoritma *Decision Tree* tunggal dan lebih robust terhadap noise. Namun, membutuhkan waktu latih yang lebih lama dan kurang dapat diinterpretasikan.
 
 ## Evaluation
-Pada bagian ini anda perlu menyebutkan metrik evaluasi yang digunakan. Lalu anda perlu menjelaskan hasil proyek berdasarkan metrik evaluasi yang digunakan.
+Untuk mengevaluasi performa dari model ML dalam melakukan prediksi jenis tanaman yang cocok ditanam berdasarkan kondisi lingkungan setempat digunakan metrik, sebagai berikut:
+- Akurasi (*accuracy*) \
+Akurasi adalah rasio jumlah prediksi yang benar terhadap seluruh jumlah data atau secara matematis[[8](https://medium.com/@prateekgaurav/mastering-classification-metrics-a-beginners-guide-part-1-accuracy-precision-and-recall-fbadc90654ab)]:
+$$Akurasi = \frac{TP + TN}{TP + TN + FP + FN}$$
+keterangan: \
+$TP (True Positive):$ Prediksi benar untuk kelas positif. \
+$TN (True Negative):$ Prediksi benar untuk kelas negatif. \
+$FP (False Positive):$ Prediksi salah, positif padahal sebenarnya negatif. \
+$FN (False Negative):$ Prediksi salah, negatif padahal sebenarnya positif. 
 
-Sebagai contoh, Anda memiih kasus klasifikasi dan menggunakan metrik **akurasi, precision, recall, dan F1 score**. Jelaskan mengenai beberapa hal berikut:
-- Penjelasan mengenai metrik yang digunakan
-- Menjelaskan hasil proyek berdasarkan metrik evaluasi
+- ROC-AUC (*Receiver Operating Characteristic – Area Under Curve*) \
+ROC-AUC mengukur kemampuan model dalam membedakan antara kelas positif dan negatif[[9](https://towardsdatascience.com/understanding-the-roc-curve-and-auc-dd4f9a192ecb/)]. ROC adalah kurva yang menggambarkan hubungan antara:
+$$True Positive Rate (TPR) = Sensitivitas = TP / (TP + FN)$$
+$$False Positive Rate (FPR) = FP / (FP + TN)$$
+AUC (*Area Under Curve*) menunjukkan seberapa baik model membedakan kelas. Nilai AUC:
+- 0.5 → model tidak lebih baik dari tebakan acak
+- 1.0 → model sempurna
+Semakin tinggi nilai AUC, semakin baik performa model dalam mengklasifikasi dengan *threshold* yang bervariasi.
 
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
+Berikut adalah hasil evaluasi dari masing-masing model:
+| Model          | Train Accuracy | Test Accuracy | ROC AUC | Overfitting |
+|----------------|----------------|---------------|---------|-------------|
+| Random Forest  | 1.000          | 0.994         | 1.000   | No          |
+| Decision Tree           | 1.000          | 0.997         | 0.996   | No          |
+| KNN  | 0.981          | 0.966         | 0.992   | No |
+Interpretasi:
+- Akurasi train dan test berada di atas 96% 
+- ROC-AUC di atas 0.99 menunjukkan kemampuan klasifikasi yang sangat baik secara probabilistik.
+- Selisih antara akurasi train dan test pada semua model $< 0.05$ → model mampu menggeneralisasi dengan baik pada data uji.
+- *Random Forest* dan *Decision Tree* sama-sama mencapai akurasi train 1.000, namun *Random Forest* sedikit lebih baik dalam AUC (1.000 vs. 0.996).
+- KNN memiliki performa sedikit di bawah dua model lainnya, tetapi tetap sangat baik, dengan ROC AUC 0.992. 
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
+![Barplot Akurasi Model](Barplot.png)
+**Kesimpulan:** \
+*Random Forest* menjadi model terbaik secara keseluruhan, karena mampu mencapai akurasi dan ROC-AUC sempurna di data train dan test. meskipun *Decision Tree* sangat mendekati, *Random Forest* biasanya lebih stabil dan tahan terhadap noise berkat algoritma ensemble-nya.
 
-**---Ini adalah bagian akhir laporan---**
 
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
 
 ## Refrerensi
 [[1](https://journal.ipb.ac.id/index.php/JIPI/article/view/51574/30158)] N. Herlina dan A. Prasetyorini, "Pengaruh Perubahan Iklim pada Musim Tanam dan Produktivitas Jagung (Zea mays L.) di Kabupaten Malang," *Jurnal Ilmu Pertanian Indonesia (JIPI)*, vol. 25, no. 1, pp. 118–128, Jan. 2020, doi: [10.18343/jipi.25.1.118.](10.18343/jipi.25.1.118.) \
@@ -168,4 +200,6 @@ _Catatan:_
 [[4](https://ishanjainoffical.medium.com/understanding-random-forest-algorithm-with-python-code-ae6fb0e34938)] Data Science & Beyond, “Understanding Random Forest Algorithm with Python Code,” Medium, Oct. 2, 2023. [Online]. https://ishanjainoffical.medium.com/understanding-random-forest-algorithm-with-python-code-ae6fb0e34938. \
 [[5](https://medium.com/swlh/k-nearest-neighbor-ca2593d7a3c4)] A. Christopher, “K-Nearest Neighbor,” The Startup, Medium, Feb. 2, 2021. [Online]. https://medium.com/swlh/k-nearest-neighbor-ca2593d7a3c4. \
 [[6](https://medium.com/@pp1222001/outlier-detection-and-removal-using-the-iqr-method-6fab2954315d)] P. Patel, “Outlier Detection and Removal using the IQR Method,” Medium, Dec. 14, 2021. [Online]. Available: https://medium.com/@pp1222001/outlier-detection-and-removal-using-the-iqr-method-6fab2954315d. \
-[[7](https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9)] O. S. Nalçin, "StandardScaler vs MinMaxScaler vs RobustScaler — Which one to use for your next ML project?," Medium, May 4, 2023. [Online]. https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9.
+[[7](https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9)] O. S. Nalçin, "StandardScaler vs MinMaxScaler vs RobustScaler — Which one to use for your next ML project?," Medium, May 4, 2023. [Online]. https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9. \
+[[8](https://medium.com/@prateekgaurav/mastering-classification-metrics-a-beginners-guide-part-1-accuracy-precision-and-recall-fbadc90654ab)] P. Gaurav, “Mastering Classification Metrics: A Beginner’s Guide (Part 1) – Accuracy, Precision, and Recall,” Medium, Sep. 28, 2023. [Online]. https://medium.com/@prateekgaurav/mastering-classification-metrics-a-beginners-guide-part-1-accuracy-precision-and-recall-fbadc90654ab. \
+[[9](https://towardsdatascience.com/understanding-the-roc-curve-and-auc-dd4f9a192ecb/)] S. Sharma, “Understanding the ROC Curve and AUC,” Towards Data Science, Sep. 28, 2023. [Online]. https://towardsdatascience.com/understanding-the-roc-curve-and-auc-dd4f9a192ecb/.
