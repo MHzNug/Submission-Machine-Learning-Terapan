@@ -141,27 +141,36 @@ Visualisasi *coutplot* menampilkan distribusi dari fitur kategorik target. Dari 
 Berikut adalah tahapan dalam menyiapkan data secara berurutan:
 - **Penanganan *outlier*** \
 metode IQR adalah metode yang digunakan untuk mengatasi *outlier* dengan mebuang/menghapus nilai yang berada diluar batas atas dan batas bawah. Cara mengidetifikasi *outlier* adalah dengan mengurutkan nilai numerik dan membaginya menjadi empat bagian sama rata. Titik di akhir bagian pertama disebut $Q1$ (kuartil pertama), dan titik di akhir bagian ketiga disebut $Q3$ (kuartil ketiga). Jarak antara $Q1$ dan $Q3$ disebut IQR. secara matematis dapat dituliskan sebagai berikut: 
+
 $$IQR=Q3−Q1$$ 
-$$Batas Bawah=Q1−1,5×IQR$$ 
+
+$$Batas Bawah=Q1−1,5×IQR$$
+
 $$Batas Atas=Q3+1,5×IQR$$
+
 Semua data yang nilainya kurang dari Batas Bawah atau lebih dari Batas Atas dianggap outlier dan dihapus[[6](https://medium.com/@pp1222001/outlier-detection-and-removal-using-the-iqr-method-6fab2954315d)]. \
+
 Metode ini dipilih karena bersifat robust, sederhana, dan tidak memerlukan asumsi distribusi. Dengan menggunakan IQR, kita dapat secara objektif menentukan nilai-nilai yang sangat menyimpang dari pola umum data tanpa terpengaruh oleh outlier itu sendiri. Dengan demikian, model dapat lebih akurat dan stabil karena data menjadi lebih bersih tanpa penyimpangan yang tidak wajar.
 - **Spliting data** \
 Membagi dataset menjadi dua bagian sebagai data latih (*train*) dan data uji (*test*). Pembagian dataset bertujuan untuk melatih dan mengevaluasi kinerja dari model. Pada proyek ini, digunakan proporsi *train* sebesar $80%$ untuk melatih model dan *test* sebesar *20%* untuk mengevaluasi kinerja dari model.
 - **Standarisasi data** \
 mengubah skals nilai fitur numerik dengan tujuan supaya fitur numerik memiliki $\text{rata-rata}(\mu)=0$ dan $\text{simpangan baku}(\sigma)=1$ [[7](https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9)]. Secara matematis dapat dituliskan, sebagai berikut: 
+
 $$Z=\frac{X-\mu}{\sigma}$$
+
 Keterangan: \
 $Z$ : Nilai hasil standarisasi \
 $X$ : Nilai asli \
 $\mu$ : rata-rata dari seluruh nilai pada fitur tersebut \
 $\sigma$ : simpangan baku dari fitur tersebut \
+
 Tujuan dari tahapan ini adalah supaya setiap fitur memiliki kontribusi yang setara saat melatih model ML sehingga dapat meningkatkan performa dari model ML.
 
 ## Modeling
 Untuk menyelesaikan permasalahan dikembangkan model klasifikasi tanaman yang cocok ditanam berdasarkan kondisi longkungan (N, P, K, suhu, kelembaban, pH tanah, dan curah hujan), digunakan pendekatan tiga algoritma machine learning:
 - *Nearest Neighbors* (KNN) \
 KNN adalah metode berbabsis jarak yang mencari $k$ titik data terdekat (*neighbors*) berdasarkan jarak terdekat. Kemudian, klasifikasi ditentukan dengan "suara mayoritas" dari $k$ tetangga tersebut. Algoritma KNN dapat dilaukan dengan kode sebagai berikut:
+
     ```python
     from sklearn.neighbors import KNeighborsClassifier
     knn = KNeighborsClassifier()
@@ -169,6 +178,7 @@ KNN adalah metode berbabsis jarak yang mencari $k$ titik data terdekat (*neighbo
     Kelebihan algoritma ini adalah sederhana dan mudah diimprlementasikan. namun algoritma ini sensitif terhadap skala fitur karena berbasis jarak dan lambat saat digunakan pada data besar.
 - *Decision Tree* \
 *Decision Tree* adalah metode yang memecah ruang fitur secara herarkis dengan tujuan untuk mengelompokkan sampel ke dalam beberapa kelas. Setiap simpul memiliki satu fitur dan satu nilai amabang batas untuk membagi data menjadi dua bagian atau lebih cabang. Proses ini berlanjut sampai data dapat dikelompokkan sesuai dengan taget kelas tertentu. Algoritma *Decision Tree* dapat dilakukan dengan kode sebagai berikut:
+
     ```python
     from sklearn.tree import DecisionTreeClassifier
     dt = DecisionTreeClassifier(random_state=42)
@@ -176,6 +186,7 @@ KNN adalah metode berbabsis jarak yang mencari $k$ titik data terdekat (*neighbo
     Kelebihan dari algoritma ini adalah interpretatif, mudah divisualisasikan, dan dapat menangani fitur numerik dan kategorik. Namun, cenderung mudah *overfitting* dan tidak stabil pada perubahan data.
 - *Random Forest* \
 *Random Forest* adalah metode yang dikembangkan dari *decision tree* dengan membangun banyak *decision tree* secara paralel pada sampel data dengan pengembalian dari data asli. Pada setiap simpul hanya sekelompok kecil dari sampel fitur yang dipertimbangkan untuk dipisah. Dengan demikian, setiap pohon menjadi spesialis pada subset data dan fitur yang berbeda. Proses klasifikasi dilakukan dengan "suara mayoritas" dari setiap pohon. Pendekatan ini mengurangi *overfitting* yang sering timbul di pohon tunggal sehingga menghasilkan model yang lebih stabil dan akurat terutama saat jumlah fitur besar. Algoritma *Random Forest* dapat dilaukan dengan kode sebagai berikut:
+
     ```python
     from sklearn.ensemble import RandomForestClassifier
     rf = RandomForestClassifier(n_estimators=100, random_state=42)
@@ -186,7 +197,9 @@ KNN adalah metode berbabsis jarak yang mencari $k$ titik data terdekat (*neighbo
 Untuk mengevaluasi performa dari model ML dalam melakukan prediksi jenis tanaman yang cocok ditanam berdasarkan kondisi lingkungan setempat digunakan metrik, sebagai berikut:
 - Akurasi (*accuracy*) \
 Akurasi adalah rasio jumlah prediksi yang benar terhadap seluruh jumlah data atau secara matematis[[8](https://medium.com/@prateekgaurav/mastering-classification-metrics-a-beginners-guide-part-1-accuracy-precision-and-recall-fbadc90654ab)]:
+
 $$Akurasi = \frac{TP + TN}{TP + TN + FP + FN}$$
+
 keterangan: \
 $TP (\text{True Positive}):$ Prediksi benar untuk kelas positif. \
 $TN (\text{True Negative}):$ Prediksi benar untuk kelas negatif. \
@@ -195,8 +208,11 @@ $FN (\text{False Negative}):$ Prediksi salah, negatif padahal sebenarnya positif
 
 - ROC-AUC (*Receiver Operating Characteristic – Area Under Curve*) \
 ROC-AUC mengukur kemampuan model dalam membedakan antara kelas positif dan negatif[[9](https://towardsdatascience.com/understanding-the-roc-curve-and-auc-dd4f9a192ecb/)]. ROC adalah kurva yang menggambarkan hubungan antara:
+
 $$True Positive Rate (TPR) = Sensitivitas = TP / (TP + FN)$$
+
 $$False Positive Rate (FPR) = FP / (FP + TN)$$
+
 AUC (*Area Under Curve*) menunjukkan seberapa baik model membedakan kelas. Nilai AUC:
 - 0.5 → model tidak lebih baik dari tebakan acak
 - 1.0 → model sempurna
