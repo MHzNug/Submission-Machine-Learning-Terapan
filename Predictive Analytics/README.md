@@ -148,7 +148,7 @@ $$Batas Bawah=Q1−1,5×IQR$$
 
 $$Batas Atas=Q3+1,5×IQR$$
 
-Semua data yang nilainya kurang dari Batas Bawah atau lebih dari Batas Atas dianggap outlier dan dihapus[[6](https://medium.com/@pp1222001/outlier-detection-and-removal-using-the-iqr-method-6fab2954315d)]. \
+Semua data yang nilainya kurang dari Batas Bawah atau lebih dari Batas Atas dianggap outlier dan dihapus[[6](https://medium.com/@pp1222001/outlier-detection-and-removal-using-the-iqr-method-6fab2954315d)].
 
 Metode ini dipilih karena bersifat robust, sederhana, dan tidak memerlukan asumsi distribusi. Dengan menggunakan IQR, kita dapat secara objektif menentukan nilai-nilai yang sangat menyimpang dari pola umum data tanpa terpengaruh oleh outlier itu sendiri. Dengan demikian, model dapat lebih akurat dan stabil karena data menjadi lebih bersih tanpa penyimpangan yang tidak wajar.
 - **Spliting data** \
@@ -162,7 +162,7 @@ Keterangan: \
 $Z$ : Nilai hasil standarisasi \
 $X$ : Nilai asli \
 $\mu$ : rata-rata dari seluruh nilai pada fitur tersebut \
-$\sigma$ : simpangan baku dari fitur tersebut \
+$\sigma$ : simpangan baku dari fitur tersebut 
 
 Tujuan dari tahapan ini adalah supaya setiap fitur memiliki kontribusi yang setara saat melatih model ML sehingga dapat meningkatkan performa dari model ML.
 
