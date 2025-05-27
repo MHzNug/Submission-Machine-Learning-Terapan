@@ -158,8 +158,10 @@ print(f"jumlah kolom: {df.shape[1]}")
 # Menampilkan jumlah nilai yang terduplikat dan hilang
 
 # %%
+print(f"Jumlah nilai yang hilang: {df.isnull().sum()}")
+
+# %%
 print(f"Jumlah nilai duplikat: {df.duplicated().sum()}")
-print(f"Jumlah nilai yang hilang: {df.isnull().sum().sum()}")
 
 # %% [markdown]
 # Mengekplorasi sebaran data dari kolom numerik dengan visuali boxplot
