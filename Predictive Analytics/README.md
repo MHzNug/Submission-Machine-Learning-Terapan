@@ -84,22 +84,34 @@ Berikut adalah cuplikan dari datset:
 | `rainfall`     | Curah hujan rata-rata tahunan                | mm      |
 | `label`        | Jenis tanaman yang paling cocok ditanam berdasarkan kondisi tersebut | Kategori |
 
-### *Explooratory Data Analysis* (EDA)
+### *Exploratory Data Analysis* (EDA)
+#### Deteksi Nilai yang Hilang (*Missing Value*)
+Nilai yang hilang (*Missing Value*) pada data perlu dideteksi karena dapat menimbulakan masalah serius pada saat pemodelan. Pertama, banyak algoritma hanya bisa memproses baris data yang lengkap, sehingga baris dengan missing values akan dibuang, yang menyebabkan ukuran sampel berkurang. Kedua, jika pola missing tidak acak (misalnya, hanya responden sakit yang tidak menjawab pertanyaan kesehatan), maka model yang dibangun bisa bias karena data tidak lagi merepresentasikan populasi sebenarnya. Ketiga, adanya nilai kosong dapat membuat perhitungan matematis pada algoritma gagal atau tidak konvergen. Deteksi *missing value* dapat dilakukan dengan kode sebagai berikut:
+```Python
+df.isnull().sum()
+```
+Dari deteksi yang dilakukan diperoleh:
+```Python
+Jumlah nilai yang hilang: 0
+```
+Diperoleh bahwa data yang digunakan dalam proyek tidak memiliki *missing value*. Dengan demikian, proses pemodelan dapat dilakukan tanapa perlu melakukan imputasi atau menghapus data.
+
+#### Deteksi Nilai Duplikat
+Nilai duplikat adalah baris data yang muncul lebih dari satu kali dengan nilai yangf sama dengan baris data yang lainnya. Nilai ini perlu dideteksi karena dapat mengakibatkan dapat menurunkan pada performa model. Pertama, mengakibatkan *overfitting* karena model akan terlalu menyesuaikan diri pada pelatihan dan kurang mampu menangkap pola yang baru didata yang sebenarnya. Kedua, mengganggu keseimbangan distribusi dan proporsi dari masing-masing kelas sehingga prediksi menjadi bias pada salah satu kelas. Ketiga, pemborosan pada sumber daya komputasi (waktu pelatihan dan memori) karena model harus memproses lebih banyak data yang kurang informatif. Deteksi nilai duplikat dapat dilakukan dengan kode sebagai berikut:
+```Python
+df.duplicated()
+```
+Dari deteksi yang dilakukan diperoleh:
+```Python
+Jumlah nilai duplikat: 0
+```
+Diperoleh bahwa data yang digunakan dalam proyek tidak memiliki nilai duplikat. Dengan demikian, proses pemodelan dapat dilakukan tanapa perlu menghapus data.
+
 #### Deteksi Nilai Ekstream (*Outlier*) dengan Visualisasi Boxplot
 ![Boxplot Fitur Numerik](boxplot.png)
 Visulisasi *boxplot* adalah salah satu metode analisis univariat yang digunakan untuk melihat sebaran data numerik. Dari visualisasi *boxplot* diperoleh bahwa fitur `p`, `K`, `Temperature`, `humidity`, `pH`, dan `rainfall` memiliki  (*outlier*). Oleh karena itu, dilakukan penanganan *outlier* dengan metode *interquartile range* (IQR).
 
 #### Penanganan Nilai Ekstream (*Outlier*) dengan metode 
-metode IQR adalah metode yang digunakan untuk mengatasi *outlier* dengan mebuang/menghapus nilai yang berada diluar batas atas dan batas bawah. Cara mengidetifikasi *outlier* adalah dengan mengurutkan nilai numerik dan membaginya menjadi empat bagian sama rata. Titik di akhir bagian pertama disebut $Q1$ (kuartil pertama), dan titik di akhir bagian ketiga disebut $Q3$ (kuartil ketiga). Jarak antara $Q1$ dan $Q3$ disebut IQR. secara matematis dapat dituliskan sebagai berikut:
-
-$$IQR=Q3−Q1$$
-
-$$Batas Bawah=Q1−1,5×IQR$$
-
-$$Batas Atas=Q3+1,5×IQR$$
-
-Semua data yang nilainya kurang dari Batas Bawah atau lebih dari Batas Atas dianggap outlier dan dihapus[[6](https://medium.com/@pp1222001/outlier-detection-and-removal-using-the-iqr-method-6fab2954315d)].
-
 Penanganan *outlier* diperlukan karena *outlier* dapat menyebabkan bias pada batas-batas klasifikasi terutama pada algoritma berbasis jarak. Selain itu, dengan mengapus *outlier* dapat mengurangi *noise* dan meningkatkan performa dari model klassifikasi. 
 
 Setelah dilakukan penanganan pada *outlier* data jumlah observasi data berkurang menjadi 1768 observasi dan diperoleh sebaran data dengan visualisasi histogram sebagai berikut:
@@ -127,38 +139,43 @@ Visualisasi *coutplot* menampilkan distribusi dari fitur kategorik target. Dari 
 
 ## Data Preparation
 Berikut adalah tahapan dalam menyiapkan data secara berurutan:
+- **Penanganan *outlier*** \
+metode IQR adalah metode yang digunakan untuk mengatasi *outlier* dengan mebuang/menghapus nilai yang berada diluar batas atas dan batas bawah. Cara mengidetifikasi *outlier* adalah dengan mengurutkan nilai numerik dan membaginya menjadi empat bagian sama rata. Titik di akhir bagian pertama disebut $Q1$ (kuartil pertama), dan titik di akhir bagian ketiga disebut $Q3$ (kuartil ketiga). Jarak antara $Q1$ dan $Q3$ disebut IQR. secara matematis dapat dituliskan sebagai berikut:$$IQR=Q3−Q1$$ $$Batas Bawah=Q1−1,5×IQR$$ $$Batas Atas=Q3+1,5×IQR$$
+Semua data yang nilainya kurang dari Batas Bawah atau lebih dari Batas Atas dianggap outlier dan dihapus[[6](https://medium.com/@pp1222001/outlier-detection-and-removal-using-the-iqr-method-6fab2954315d)]. \
+Metode ini dipilih karena bersifat robust, sederhana, dan tidak memerlukan asumsi distribusi. Dengan menggunakan IQR, kita dapat secara objektif menentukan nilai-nilai yang sangat menyimpang dari pola umum data tanpa terpengaruh oleh outlier itu sendiri. Dengan demikian, model dapat lebih akurat dan stabil karena data menjadi lebih bersih tanpa penyimpangan yang tidak wajar.
 - **Spliting data** \
-Membagi dataset menjadi dua bagian sebagai data latih (*train*) dan data uji (*test*). Pembagian dataset bertujuan untuk melatih dan mengevaluasi kinerja dari model. Pada proyek ini, digunakan proporsi *train* sebesar $80%$ untuk melatih model dan *test* sebesar *20%* untuk mengevaluasi kinerja dari mopdel.
+Membagi dataset menjadi dua bagian sebagai data latih (*train*) dan data uji (*test*). Pembagian dataset bertujuan untuk melatih dan mengevaluasi kinerja dari model. Pada proyek ini, digunakan proporsi *train* sebesar $80%$ untuk melatih model dan *test* sebesar *20%* untuk mengevaluasi kinerja dari model.
 - **Standarisasi data** \
-mengubah skals nilai fitur numerik dengan tujuan supaya fitur numerik memiliki $rata-rata(\mu)=0$ dan $simpangan baku(\sigma)=1$ [[7](https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9)]. Secara matematis dapat dituliskan, sebagai berikut:
-
-$$Z=\frac{X-\mu}{\sigma}$$ 
-
-Keterangan: \
-$Z$ : Nilai hasil standarisasi
+mengubah skals nilai fitur numerik dengan tujuan supaya fitur numerik memiliki $\text{rata-rata}(\mu)=0$ dan $\text{simpangan baku}(\sigma)=1$ [[7](https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9)]. Secara matematis dapat dituliskan, sebagai berikut: $$Z=\frac{X-\mu}{\sigma}$$ Keterangan: \
+$Z$ : Nilai hasil standarisasi \
 $X$ : Nilai asli \
 $\mu$ : rata-rata dari seluruh nilai pada fitur tersebut \
-$\sigma$ : simpangan baku dari fitur tersebut 
-
+$\sigma$ : simpangan baku dari fitur tersebut \
 Tujuan dari tahapan ini adalah supaya setiap fitur memiliki kontribusi yang setara saat melatih model ML sehingga dapat meningkatkan performa dari model ML.
 
 ## Modeling
 Untuk menyelesaikan permasalahan dikembangkan model klasifikasi tanaman yang cocok ditanam berdasarkan kondisi longkungan (N, P, K, suhu, kelembaban, pH tanah, dan curah hujan), digunakan pendekatan tiga algoritma machine learning:
-- *Nearest Neighbors* (KNN)  
+- *Nearest Neighbors* (KNN) \
+KNN adalah metode berbabsis jarak yang mencari $k$ titik data terdekat (*neighbors*) berdasarkan jarak terdekat. Kemudian, klasifikasi ditentukan dengan "suara mayoritas" dari $k$ tetangga tersebut. Algoritma KNN dapat dilaukan dengan kode sebagai berikut:
     ```python
     from sklearn.neighbors import KNeighborsClassifier
     knn = KNeighborsClassifier()
-Kelebihan algoritma ini adalah sederhana dan mudah diimprlementasikan. namun algoritma ini sensitif terhadap skala fitur karena berbasis jarak dan lambat saat digunakan pada data besar.
-- *Decision Tree*
+    ``` 
+    Kelebihan algoritma ini adalah sederhana dan mudah diimprlementasikan. namun algoritma ini sensitif terhadap skala fitur karena berbasis jarak dan lambat saat digunakan pada data besar.
+- *Decision Tree* \
+*Decision Tree* adalah metode yang memecah ruang fitur secara herarkis dengan tujuan untuk mengelompokkan sampel ke dalam beberapa kelas. Setiap simpul memiliki satu fitur dan satu nilai amabang batas untuk membagi data menjadi dua bagian atau lebih cabang. Proses ini berlanjut sampai data dapat dikelompokkan sesuai dengan taget kelas tertentu. Algoritma *Decision Tree* dapat dilakukan dengan kode sebagai berikut:
     ```python
     from sklearn.tree import DecisionTreeClassifier
     dt = DecisionTreeClassifier(random_state=42)
-Kelebihan dari algoritma ini adalah interpretatif, mudah divisualisasikan, dan dapat menangani fitur numerik dan kategorik. Namun, cenderung mudah *overfitting* dan tidak stabil pada perubahan data.
-- *Random Forest* 
+    ```
+    Kelebihan dari algoritma ini adalah interpretatif, mudah divisualisasikan, dan dapat menangani fitur numerik dan kategorik. Namun, cenderung mudah *overfitting* dan tidak stabil pada perubahan data.
+- *Random Forest* \
+*Random Forest* adalah metode yang dikembangkan dari *decision tree* dengan membangun banyak *decision tree* secara paralel pada sampel data dengan pengembalian dari data asli. Pada setiap simpul hanya sekelompok kecil dari sampel fitur yang dipertimbangkan untuk dipisah. Dengan demikian, setiap pohon menjadi spesialis pada subset data dan fitur yang berbeda. Proses klasifikasi dilakukan dengan "suara mayoritas" dari setiap pohon. Pendekatan ini mengurangi *overfitting* yang sering timbul di pohon tunggal sehingga menghasilkan model yang lebih stabil dan akurat terutama saat jumlah fitur besar. Algoritma *Random Forest* dapat dilaukan dengan kode sebagai berikut:
     ```python
     from sklearn.ensemble import RandomForestClassifier
     rf = RandomForestClassifier(n_estimators=100, random_state=42)
-Kelebihan dari algoritma ini adalah memiliki akurasi tinggi, dapat mengurangi *overfitting* dari algoritma *Decision Tree* tunggal dan lebih robust terhadap noise. Namun, membutuhkan waktu latih yang lebih lama dan kurang dapat diinterpretasikan.
+    ```
+    Kelebihan dari algoritma ini adalah memiliki akurasi tinggi, dapat mengurangi *overfitting* dari algoritma *Decision Tree* tunggal dan lebih robust terhadap noise. Namun, membutuhkan waktu latih yang lebih lama dan kurang dapat diinterpretasikan.
 
 ## Evaluation
 Untuk mengevaluasi performa dari model ML dalam melakukan prediksi jenis tanaman yang cocok ditanam berdasarkan kondisi lingkungan setempat digunakan metrik, sebagai berikut:
