@@ -164,7 +164,7 @@ $X$ : Nilai asli \
 $\mu$ : rata-rata dari seluruh nilai pada fitur tersebut \
 $\sigma$ : simpangan baku dari fitur tersebut 
 
-Tujuan dari tahapan ini adalah supaya setiap fitur memiliki kontribusi yang setara saat melatih model ML sehingga dapat meningkatkan performa dari model ML.
+Tujuan dari tahapan ini adalah supaya setiap fitur memiliki kontribusi yang setara saat melatih model sehingga dapat meningkatkan performa dari model.
 
 ## Modeling
 Untuk menyelesaikan permasalahan dikembangkan model klasifikasi tanaman yang cocok ditanam berdasarkan kondisi longkungan (N, P, K, suhu, kelembaban, pH tanah, dan curah hujan), digunakan pendekatan tiga algoritma machine learning:
