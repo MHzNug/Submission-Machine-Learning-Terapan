@@ -186,14 +186,12 @@ KNN adalah metode berbabsis jarak yang mencari $k$ titik data terdekat (*neighbo
 Untuk mengevaluasi performa dari model ML dalam melakukan prediksi jenis tanaman yang cocok ditanam berdasarkan kondisi lingkungan setempat digunakan metrik, sebagai berikut:
 - Akurasi (*accuracy*) \
 Akurasi adalah rasio jumlah prediksi yang benar terhadap seluruh jumlah data atau secara matematis[[8](https://medium.com/@prateekgaurav/mastering-classification-metrics-a-beginners-guide-part-1-accuracy-precision-and-recall-fbadc90654ab)]:
-
 $$Akurasi = \frac{TP + TN}{TP + TN + FP + FN}$$
-
 keterangan: \
-$TP (True Positive):$ Prediksi benar untuk kelas positif. \
-$TN (True Negative):$ Prediksi benar untuk kelas negatif. \
-$FP (False Positive):$ Prediksi salah, positif padahal sebenarnya negatif. \
-$FN (False Negative):$ Prediksi salah, negatif padahal sebenarnya positif. 
+$TP (\text{True Positive}):$ Prediksi benar untuk kelas positif. \
+$TN (\text{True Negative}):$ Prediksi benar untuk kelas negatif. \
+$FP (\text{False Positive}):$ Prediksi salah, positif padahal sebenarnya negatif. \
+$FN (\text{False Negative}):$ Prediksi salah, negatif padahal sebenarnya positif. 
 
 - ROC-AUC (*Receiver Operating Characteristic – Area Under Curve*) \
 ROC-AUC mengukur kemampuan model dalam membedakan antara kelas positif dan negatif[[9](https://towardsdatascience.com/understanding-the-roc-curve-and-auc-dd4f9a192ecb/)]. ROC adalah kurva yang menggambarkan hubungan antara:
