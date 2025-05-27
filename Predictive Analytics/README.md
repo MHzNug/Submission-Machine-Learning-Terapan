@@ -140,13 +140,18 @@ Visualisasi *coutplot* menampilkan distribusi dari fitur kategorik target. Dari 
 ## Data Preparation
 Berikut adalah tahapan dalam menyiapkan data secara berurutan:
 - **Penanganan *outlier*** \
-metode IQR adalah metode yang digunakan untuk mengatasi *outlier* dengan mebuang/menghapus nilai yang berada diluar batas atas dan batas bawah. Cara mengidetifikasi *outlier* adalah dengan mengurutkan nilai numerik dan membaginya menjadi empat bagian sama rata. Titik di akhir bagian pertama disebut $Q1$ (kuartil pertama), dan titik di akhir bagian ketiga disebut $Q3$ (kuartil ketiga). Jarak antara $Q1$ dan $Q3$ disebut IQR. secara matematis dapat dituliskan sebagai berikut: $$IQR=Q3−Q1$$ $$Batas Bawah=Q1−1,5×IQR$$ $$Batas Atas=Q3+1,5×IQR$$
+metode IQR adalah metode yang digunakan untuk mengatasi *outlier* dengan mebuang/menghapus nilai yang berada diluar batas atas dan batas bawah. Cara mengidetifikasi *outlier* adalah dengan mengurutkan nilai numerik dan membaginya menjadi empat bagian sama rata. Titik di akhir bagian pertama disebut $Q1$ (kuartil pertama), dan titik di akhir bagian ketiga disebut $Q3$ (kuartil ketiga). Jarak antara $Q1$ dan $Q3$ disebut IQR. secara matematis dapat dituliskan sebagai berikut: 
+$$IQR=Q3−Q1$$ 
+$$Batas Bawah=Q1−1,5×IQR$$ 
+$$Batas Atas=Q3+1,5×IQR$$
 Semua data yang nilainya kurang dari Batas Bawah atau lebih dari Batas Atas dianggap outlier dan dihapus[[6](https://medium.com/@pp1222001/outlier-detection-and-removal-using-the-iqr-method-6fab2954315d)]. \
 Metode ini dipilih karena bersifat robust, sederhana, dan tidak memerlukan asumsi distribusi. Dengan menggunakan IQR, kita dapat secara objektif menentukan nilai-nilai yang sangat menyimpang dari pola umum data tanpa terpengaruh oleh outlier itu sendiri. Dengan demikian, model dapat lebih akurat dan stabil karena data menjadi lebih bersih tanpa penyimpangan yang tidak wajar.
 - **Spliting data** \
 Membagi dataset menjadi dua bagian sebagai data latih (*train*) dan data uji (*test*). Pembagian dataset bertujuan untuk melatih dan mengevaluasi kinerja dari model. Pada proyek ini, digunakan proporsi *train* sebesar $80%$ untuk melatih model dan *test* sebesar *20%* untuk mengevaluasi kinerja dari model.
 - **Standarisasi data** \
-mengubah skals nilai fitur numerik dengan tujuan supaya fitur numerik memiliki $\text{rata-rata}(\mu)=0$ dan $\text{simpangan baku}(\sigma)=1$ [[7](https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9)]. Secara matematis dapat dituliskan, sebagai berikut: $$Z=\frac{X-\mu}{\sigma}$$ Keterangan: \
+mengubah skals nilai fitur numerik dengan tujuan supaya fitur numerik memiliki $\text{rata-rata}(\mu)=0$ dan $\text{simpangan baku}(\sigma)=1$ [[7](https://medium.com/@onersarpnalcin/standardscaler-vs-minmaxscaler-vs-robustscaler-which-one-to-use-for-your-next-ml-project-ae5b44f571b9)]. Secara matematis dapat dituliskan, sebagai berikut: 
+$$Z=\frac{X-\mu}{\sigma}$$
+Keterangan: \
 $Z$ : Nilai hasil standarisasi \
 $X$ : Nilai asli \
 $\mu$ : rata-rata dari seluruh nilai pada fitur tersebut \
