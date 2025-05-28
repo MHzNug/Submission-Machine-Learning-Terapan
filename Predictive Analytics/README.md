@@ -52,7 +52,7 @@ Untuk mencapai tujuan proyek ini, akan dilakukan pengembangan model ML dengan ti
     - Memilih model  dengan keseimbangan optimal (ROC-AUC tinggi) dan tidak memiliki potensi *overfitting*.
 
 ## Data Understanding
-Dataset yang digunakan berasal dari [Kaggle](https://www.kaggle.com) yang berisi informasi mengenai jenis tanaman yang cocok untuk dibudidayakan sesuai dengan kondisi lingkungan setempat. Dataset terdiri dari 22000 observasi tanpa nilai yang hilang dan data duplikat dengan 8 fitur yang mencakup 7 fitur input numerik dan 1 fitur target output berupa jenis tanaman yang sesuai. berikut adalah ringkasan informasi dari dataset:
+Dataset yang digunakan berasal dari [Kaggle](https://www.kaggle.com) yang berisi informasi mengenai jenis tanaman yang cocok untuk dibudidayakan sesuai dengan kondisi lingkungan setempat. Dataset terdiri dari 2200 observasi tanpa nilai yang hilang dan data duplikat dengan 8 fitur yang mencakup 7 fitur input numerik dan 1 fitur target output berupa jenis tanaman yang sesuai. berikut adalah ringkasan informasi dari dataset:
 | Jenis        | Keterangan                                                                                           |
 |--------------|------------------------------------------------------------------------------------------------------|
 | Title        | Crop Recommendation Dataset                                                                          |
@@ -151,6 +151,12 @@ $$Batas Atas=Q3+1,5×IQR$$
 Semua data yang nilainya kurang dari Batas Bawah atau lebih dari Batas Atas dianggap outlier dan dihapus[[6](https://medium.com/@pp1222001/outlier-detection-and-removal-using-the-iqr-method-6fab2954315d)].
 
 Metode ini dipilih karena bersifat robust, sederhana, dan tidak memerlukan asumsi distribusi. Dengan menggunakan IQR, kita dapat secara objektif menentukan nilai-nilai yang sangat menyimpang dari pola umum data tanpa terpengaruh oleh outlier itu sendiri. Dengan demikian, model dapat lebih akurat dan stabil karena data menjadi lebih bersih tanpa penyimpangan yang tidak wajar.
+- **Mengubah label target ke bentuk numerik** \
+Karena variabel target berupa kolom dengan tipe data `object`, dilakukan konversi nilai menjadi bentuk numerik denga mengggunakan kode sebagai berikut:
+    ```Python
+    df['label_encoded'] = df['label'].astype('category').cat.codes
+    ```
+    Proses ini harus dilakukan karena hampir semua algoritma *machine learning* hanya menerima input numerik.Selain itu, encoding yang tepat menjaga konsistensi *preprocessing* pada data dan mencegah model salah menafsirkan jarak atau urutan antar kategori, sehingga prediksi menjadi lebih akurat dan stabil.
 - **Spliting data** \
 Membagi dataset menjadi dua bagian sebagai data latih (*train*) dan data uji (*test*). Pembagian dataset bertujuan untuk melatih dan mengevaluasi kinerja dari model. Pada proyek ini, digunakan proporsi *train* sebesar $80%$ untuk melatih model dan *test* sebesar *20%* untuk mengevaluasi kinerja dari model.
 - **Standarisasi data** \
@@ -175,7 +181,7 @@ KNN adalah metode berbabsis jarak yang mencari $k$ titik data terdekat (*neighbo
     from sklearn.neighbors import KNeighborsClassifier
     knn = KNeighborsClassifier()
     ``` 
-    Kelebihan algoritma ini adalah sederhana dan mudah diimprlementasikan. namun algoritma ini sensitif terhadap skala fitur karena berbasis jarak dan lambat saat digunakan pada data besar.
+    pada proses ini, model menggunakan parameter bnawaan (jumlah tetangga $(k) = 5$). Kelebihan algoritma ini adalah sederhana dan mudah diimprlementasikan. namun algoritma ini sensitif terhadap skala fitur karena berbasis jarak dan lambat saat digunakan pada data besar.
 - *Decision Tree* \
 *Decision Tree* adalah metode yang memecah ruang fitur secara herarkis dengan tujuan untuk mengelompokkan sampel ke dalam beberapa kelas. Setiap simpul memiliki satu fitur dan satu nilai amabang batas untuk membagi data menjadi dua bagian atau lebih cabang. Proses ini berlanjut sampai data dapat dikelompokkan sesuai dengan taget kelas tertentu. Algoritma *Decision Tree* dapat dilakukan dengan kode sebagai berikut:
 
@@ -183,15 +189,15 @@ KNN adalah metode berbabsis jarak yang mencari $k$ titik data terdekat (*neighbo
     from sklearn.tree import DecisionTreeClassifier
     dt = DecisionTreeClassifier(random_state=42)
     ```
-    Kelebihan dari algoritma ini adalah interpretatif, mudah divisualisasikan, dan dapat menangani fitur numerik dan kategorik. Namun, cenderung mudah *overfitting* dan tidak stabil pada perubahan data.
+    pada proses ini, model menggunakan parameter `random_satate=42` untuk menjaga keluaran model agar tetap identik setiap dijalankan. Kelebihan dari algoritma ini adalah interpretatif, mudah divisualisasikan, dan dapat menangani fitur numerik dan kategorik. Namun, cenderung mudah *overfitting* dan tidak stabil pada perubahan data.
 - *Random Forest* \
-*Random Forest* adalah metode yang dikembangkan dari *decision tree* dengan membangun banyak *decision tree* secara paralel pada sampel data dengan pengembalian dari data asli. Pada setiap simpul hanya sekelompok kecil dari sampel fitur yang dipertimbangkan untuk dipisah. Dengan demikian, setiap pohon menjadi spesialis pada subset data dan fitur yang berbeda. Proses klasifikasi dilakukan dengan "suara mayoritas" dari setiap pohon. Pendekatan ini mengurangi *overfitting* yang sering timbul di pohon tunggal sehingga menghasilkan model yang lebih stabil dan akurat terutama saat jumlah fitur besar. Algoritma *Random Forest* dapat dilaukan dengan kode sebagai berikut:
+*Random Forest* adalah metode yang dikembangkan dari *decision tree* dengan membangun banyak *decision tree* secara paralel pada sampel data dengan pengembalian dari data asli. Pada setiap simpul hanya sekelompok kecil dari sampel fitur yang dipertimbangkan untuk dipisah. Dengan demikian, setiap pohon menjadi spesialis pada subset data dan fitur yang berbeda. Proses klasifikasi dilakukan dengan "suara mayoritas" dari setiap pohon. Pendekatan ini mengurangi *overfitting* yang sering timbul di pohon tunggal sehingga menghasilkan model yang lebih stabil dan akurat terutama saat jumlah fitur besar. Algoritma *Random Forest* dapat dilakukan dengan kode sebagai berikut:
 
     ```python
     from sklearn.ensemble import RandomForestClassifier
-    rf = RandomForestClassifier(n_estimators=100, random_state=42)
+    rf = RandomForestClassifier(random_state=42)
     ```
-    Kelebihan dari algoritma ini adalah memiliki akurasi tinggi, dapat mengurangi *overfitting* dari algoritma *Decision Tree* tunggal dan lebih robust terhadap noise. Namun, membutuhkan waktu latih yang lebih lama dan kurang dapat diinterpretasikan.
+    pada proses ini, model menggunakan parameter `random_satate=42` untuk menjaga keluaran model agar tetap identik setiap dijalankan. Kelebihan dari algoritma ini adalah memiliki akurasi tinggi, dapat mengurangi *overfitting* dari algoritma *Decision Tree* tunggal dan lebih robust terhadap noise. Namun, membutuhkan waktu latih yang lebih lama dan kurang dapat diinterpretasikan.
 
 ## Evaluation
 Untuk mengevaluasi performa dari model ML dalam melakukan prediksi jenis tanaman yang cocok ditanam berdasarkan kondisi lingkungan setempat digunakan metrik, sebagai berikut:
