@@ -31,43 +31,30 @@
 # Melakukan import pustakan yang akan digunakan dalam proyek
 
 # %%
-# =====================
 # Data Manipulation
-# =====================
 import numpy as np
 import pandas as pd
 
-# =====================
 # Visualization
-# =====================
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# =====================
 # Modeling - Classifiers
-# =====================
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 
-# =====================
 # Modeling - Evaluation
-# =====================
 from sklearn.metrics import (
     accuracy_score,
-    classification_report,
-    confusion_matrix,
     roc_auc_score,
-    roc_curve,
-    silhouette_score
 )
 
-# =====================
 # Modeling - Preprocessing
-# =====================
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+# Statistical Analysis
 from scipy.stats import skew
 
 
