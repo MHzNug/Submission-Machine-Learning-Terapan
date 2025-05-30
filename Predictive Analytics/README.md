@@ -175,7 +175,7 @@ Tujuan dari tahapan ini adalah supaya setiap fitur memiliki kontribusi yang seta
 ## Modeling
 Untuk menyelesaikan permasalahan dikembangkan model klasifikasi tanaman yang cocok ditanam berdasarkan kondisi longkungan (N, P, K, suhu, kelembaban, pH tanah, dan curah hujan), digunakan pendekatan tiga algoritma machine learning:
 - *Nearest Neighbors* (KNN) \
-KNN adalah metode berbabsis jarak yang mencari $k$ titik data terdekat (*neighbors*) berdasarkan jarak terdekat. Kemudian, klasifikasi ditentukan dengan "suara mayoritas" dari $k$ tetangga tersebut. Algoritma KNN dapat dilaukan dengan kode sebagai berikut:
+KNN adalah metode berbabsis jarak yang mencari $k$ titik data terdekat (*neighbors*) berdasarkan jarak terdekat. Kemudian, klasifikasi ditentukan dengan "suara mayoritas" dari $k$ tetangga tersebut. Algoritma KNN dapat dilakukan dengan kode sebagai berikut:
 
     ```python
     from sklearn.neighbors import KNeighborsClassifier
