@@ -233,17 +233,17 @@ $$\text{NDCG}_p = \frac{\text{DCG}_p}{\text{IDCG}_p}$$
 
 dengan
 
-$$\text{DCG}_p = \sum_{i=1}^{p} \frac{2^{rel_i} - 1}{\log_2(i + 1)}$$
+DCGₚ = Σ (2^relᵢ - 1) / log₂(i + 1), untuk i dari 1 sampai p
 
 dan
 
 $$\text{IDCG}_p = \max \text{DCG}_p$$
 
 Keterangan:  
-- \( p \) : jumlah posisi teratas yang dihitung (cut-off rank)  
-- \( rel_i \) : nilai relevansi item pada posisi \( i \)  
-- \( \text{DCG}_p \) : Discounted Cumulative Gain pada posisi \( p \)  
-- \( \text{IDCG}_p \) : DCG ideal (hasil terbaik yang mungkin) pada posisi \( p \)
+- $\( p \)$ : jumlah posisi teratas yang dihitung (cut-off rank)  
+- $\( rel_i \)$ : nilai relevansi item pada posisi $\( i \)$  
+- $\( \text{DCG}_p \)$ : Discounted Cumulative Gain pada posisi $\( p \)$  
+- $\( \text{IDCG}_p \)$ : DCG ideal (hasil terbaik yang mungkin) pada posisi $\( p \)$
 
 
 Dengan menggunakan *ground truth* (kondisi sebenarnya di dunia nyata) berikut:
